@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ثانوية الشيخ عبدالرحمن بن سعدي</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    padding:0;
+    background:#001634;
+    font-family:"Cairo",sans-serif;
+    color:white;
+    overflow:hidden;
+    text-align:center;
+}
+
+/* العنوان */
+h1{
+    margin-top:25px;
+    font-size:2.8rem;
+    color:#ffd700;
+    text-shadow:0 0 18px rgba(255,215,0,0.7);
+}
+
+/* شبكة الايقونات */
+.icons{
+    margin-top:45px;
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    flex-wrap:wrap;
+}
+
+/* الايقونة */
+.icon-box{
+    width:170px;
+    height:170px;
+    border-radius:22px;
+    background:rgba(255,255,255,0.06);
+    border:2px solid rgba(255,215,0,0.55);
+    box-shadow:0 0 18px rgba(255,215,0,0.35);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:#ffd700;
+    transition:0.25s;
+    cursor:pointer;
+    font-size:3rem;
+}
+.icon-box span{
+    margin-top:8px;
+    font-size:1.15rem;
+    font-weight:700;
+}
+.icon-box:hover{
+    transform:translateY(-8px) scale(1.05);
+    box-shadow:0 0 28px rgba(255,215,0,0.7);
+}
+
+/* الفوتر */
+footer{
+    position:absolute;
+    bottom:18px;
+    width:100%;
+    font-size:0.85rem;
+    color:#ffd700;
+    opacity:0.7;
+}
+</style>
+</head>
+
+<body>
+
+<h1>ثانوية الشيخ عبدالرحمن بن سعدي</h1>
+
+<div class="icons">
+
+    <div class="icon-box" onclick="go('quran.html')">
+        📖
+        <span>القرآن الكريم</span>
+    </div>
+
+    <div class="icon-box" onclick="go('speech.html')">
+        🎙
+        <span>كلمة الصباح</span>
+    </div>
+
+    <div class="icon-box" onclick="go('radio.html')">
+        📻
+        <span>الإذاعة المدرسية</span>
+    </div>
+
+    <div class="icon-box" onclick="go('anthem.html')">
+        🎵
+        <span>النشيد الوطني</span>
+    </div>
+
+    <div class="icon-box" onclick="go('gallery.html')">
+        🖼
+        <span>معرض الصور</span>
+    </div>
+
+</div>
+
+<footer>
+© إعداد الأستاذ ماجد صالح الناصر
+</footer>
+
+<script>
+/* ========= فك قفل الصوت بأول تفاعل (غير ملحوظ) ========= */
+function unlockAudioOnce() {
+    if (sessionStorage.getItem("audioUnlocked") === "yes") return;
+
+    const audio = document.createElement("audio");
+    audio.src = "data:audio/mp3;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQCA...";
+    audio.volume = 0.01;
+
+    audio.play().then(() => {
+        sessionStorage.setItem("audioUnlocked", "yes");
+        console.log("🔓 audio unlocked");
+    }).catch(()=>{});
+}
+
+/* التنقل مع فك الصوت */
+function go(page){
+    unlockAudioOnce();
+    setTimeout(() => {
+        window.location.href = page;
+    }, 80);
+}
+</script>
+
+</body>
+</html>

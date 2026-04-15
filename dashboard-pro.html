@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>لوحة التحكم - ثانوية الشيخ عبدالرحمن بن سعدي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0; padding:20px;
+      font-family:"Cairo",sans-serif;
+      background: radial-gradient(circle at top, #08224f 0%, #000814 60%);
+      color:#fff; direction:rtl;
+    }
+    header{text-align:center; margin-bottom:15px;}
+    header h1{margin:0; font-size:2rem; color:#ffd700; text-shadow:0 0 18px rgba(255,215,0,0.8);}
+    header h2{margin:4px 0 0; font-size:1rem; color:#ffeb99;}
+
+    .top-bar{
+      display:flex; justify-content:space-between; align-items:center;
+      gap:12px; margin:8px 10px 16px; font-size:0.9rem; color:#d4d4ff;
+      flex-wrap:wrap;
+    }
+    .top-bar button{
+      background:#ffd700; border:none; padding:6px 14px; border-radius:10px;
+      font-weight:700; cursor:pointer; color:#000;
+    }
+    .top-bar button:hover{box-shadow:0 0 15px rgba(255,215,0,0.9);}
+
+    .layout{display:grid; grid-template-columns:1.1fr 1.6fr; gap:18px;}
+    .card{
+      background:rgba(255,255,255,0.04);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.2);
+      padding:12px 14px;
+      box-shadow:0 0 18px rgba(0,0,0,0.6);
+      overflow:hidden;
+    }
+    .card h3{
+      margin:0 0 10px; font-size:1.1rem; color:#ffd700;
+      border-bottom:1px solid rgba(255,215,0,0.4); padding-bottom:4px;
+    }
+
+    .form-group{margin-bottom:10px; text-align:right;}
+    label{display:block; font-size:0.9rem; margin-bottom:4px; color:#ffeb99;}
+
+    select, input[type="text"]{
+      width:100%;
+      padding:9px 10px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.25);
+      background:rgba(0,0,0,0.45);
+      color:#fff;
+      font-family:inherit;
+    }
+    input[type="text"]::placeholder{color:#aaa;}
+    .hint{font-size:0.82rem; color:#cfcfe8; margin-top:4px; line-height:1.5;}
+    code{background:rgba(0,0,0,0.35); padding:2px 6px; border-radius:8px; color:#ffeb99}
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:10px;
+      align-items:end;
+    }
+
+    /* زر اختيار ملف */
+    .pick-btn{
+      width:100%;
+      background:rgba(255,215,0,0.15);
+      border:1px solid rgba(255,215,0,0.5);
+      color:#ffd700;
+      padding:9px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:800;
+      white-space:nowrap;
+    }
+    .pick-btn:hover{box-shadow:0 0 14px rgba(255,215,0,0.35);}
+
+    .btn-row{margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;}
+    .btn{
+      border:none; padding:9px 14px; border-radius:12px;
+      font-weight:800; cursor:pointer; font-size:0.95rem;
+    }
+    .btn-primary{background:#ffd700; color:#000;}
+    .btn-primary:hover{box-shadow:0 0 15px rgba(255,215,0,0.9);}
+    .btn-secondary{background:#555; color:#fff;}
+    .btn-secondary:hover{opacity:0.92;}
+
+    table{width:100%; border-collapse:collapse; font-size:0.92rem; margin-top:6px;}
+    th, td{
+      border-bottom:1px solid rgba(255,255,255,0.15);
+      padding:8px 6px; text-align:right;
+    }
+    th{color:#ffd700;}
+    td.actions{white-space:nowrap;}
+    .small-btn{
+      border-radius:10px; border:none; padding:4px 10px;
+      margin-left:6px; font-size:0.85rem; cursor:pointer; font-weight:800;
+    }
+    .small-btn.play{background:#ffd700; color:#000;}
+    .small-btn.delete{background:#b30000; color:#fff;}
+    .small-btn:hover{opacity:0.92;}
+
+    .preview-box{margin-top:10px;}
+    .preview-title{margin:6px 0 8px; font-size:0.95rem; color:#ffeb99;}
+    .preview-box video{
+      width:100%;
+      max-height:280px;
+      background:#000;
+      border-radius:14px;
+      border:2px solid rgba(255,215,0,0.5);
+    }
+
+    .note{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,215,0,0.28);
+      background:rgba(0,0,0,0.35);
+      color:#d4d4ff;
+      font-size:0.9rem;
+      line-height:1.6;
+    }
+
+    footer{margin-top:14px; text-align:center; font-size:0.85rem; color:#d7c78a;}
+
+    @media (max-width: 980px){
+      .layout{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>لوحة التحكم العامة</h1>
+    <h2>إدارة مقاطع القرآن، كلمة الصباح، الإذاعة، النشيد الوطني</h2>
+  </header>
+
+  <div class="top-bar">
+    <div>اختر القسم ثم أدخل عنوان المقطع واختر ملف الفيديو (سيُحفظ اسم الملف فقط).</div>
+    <button onclick="location.href='index.html'">🏠 العودة للصفحة الرئيسية</button>
+  </div>
+
+  <div class="layout">
+
+    <!-- نموذج الإضافة -->
+    <div class="card">
+      <h3>➕ إضافة / تعديل مقطع</h3>
+
+      <div class="form-group">
+        <label for="sectionSelect">القسم المستهدف:</label>
+        <select id="sectionSelect">
+          <option value="quran">📖 القرآن الكريم</option>
+          <option value="speech">🎙 كلمة الصباح</option>
+          <option value="radio">📻 الإذاعة المدرسية</option>
+          <option value="anthem">🎵 النشيد الوطني</option>
+        </select>
+        <div class="hint">
+          سيتم الحفظ في <code>localStorage</code> تحت المفتاح: <code>items_القسم</code>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="clipName">عنوان المقطع (يظهر على الشاشة):</label>
+        <input id="clipName" type="text" placeholder="مثال: تلاوة سورة الفاتحة - الطالب أحمد" />
+      </div>
+
+      <div class="form-group">
+        <label>ملف الفيديو:</label>
+        <div class="row">
+          <div>
+            <input id="fileName" type="text" placeholder="سيتم تعبئته تلقائياً عند اختيار الملف" />
+            <div class="hint" id="folderHint"></div>
+          </div>
+
+          <!-- زر/حقل اختيار الملف -->
+          <div>
+            <input id="filePicker" type="file" accept="video/*" style="display:none" />
+            <button class="pick-btn" type="button" onclick="document.getElementById('filePicker').click()">📁 استعراض</button>
+          </div>
+        </div>
+
+        <div class="note">
+          🔸 المتصفح لا يستطيع نسخ الملف تلقائياً إلى مجلد المشروع.<br>
+          ✅ بعد اختيار الملف: انسخه يدوياً إلى المجلد الصحيح داخل المشروع، ثم سيعمل التشغيل في الصفحات.
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="addItem()">💾 حفظ المقطع</button>
+        <button class="btn btn-secondary" onclick="clearForm()">مسح الحقول</button>
+      </div>
+    </div>
+
+    <!-- قائمة العناصر + المعاينة -->
+    <div class="card">
+      <h3>📚 المقاطع المسجّلة في القسم الحالي</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>العنوان</th>
+            <th>اسم الملف</th>
+            <th>إجراءات</th>
+          </tr>
+        </thead>
+        <tbody id="itemsTableBody"></tbody>
+      </table>
+
+      <div class="preview-box">
+        <div class="preview-title" id="previewTitle">لا توجد معاينة حالية</div>
+        <video id="previewPlayer" controls playsinline></video>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    © إعداد الأستاذ ماجد صالح الناصر – لوحة تحكم ربط المقاطع بالصفحات
+  </footer>
+
+<script>
+  // مجلدات الفيديو حسب القسم
+  const VIDEO_FOLDERS = {
+    quran: "videos/quran/",
+    speech: "videos/speech/",
+    radio: "videos/radio/",
+    anthem: "videos/anthem/"
+  };
+
+  const sectionSelect = document.getElementById("sectionSelect");
+  const clipNameInput = document.getElementById("clipName");
+  const fileNameInput = document.getElementById("fileName");
+  const filePicker = document.getElementById("filePicker");
+  const folderHint = document.getElementById("folderHint");
+
+  const tableBody = document.getElementById("itemsTableBody");
+  const previewPlayer = document.getElementById("previewPlayer");
+  const previewTitle = document.getElementById("previewTitle");
+
+  function storageKeyForSection(section){ return "items_" + section; }
+
+  function loadItems(section){
+    const key = storageKeyForSection(section);
+    try { return JSON.parse(localStorage.getItem(key) || "[]"); }
+    catch(e){ return []; }
+  }
+
+  function saveItems(section, items){
+    const key = storageKeyForSection(section);
+    localStorage.setItem(key, JSON.stringify(items));
+  }
+
+  function updateFolderHint(){
+    const section = sectionSelect.value;
+    folderHint.innerHTML = `ضع الملف داخل: <code>${VIDEO_FOLDERS[section]}</code> ثم احفظه هنا باسم الملف فقط (مثال: <code>qran1.mp4</code>)`;
+  }
+
+  // ✅ عند اختيار ملف: ضع اسمه في خانة اسم الملف (بدون مسار)
+  filePicker.addEventListener("change", () => {
+    const f = filePicker.files && filePicker.files[0];
+    if(!f) return;
+    fileNameInput.value = f.name; // الاسم فقط
+  });
+
+  function refreshTable(){
+    const section = sectionSelect.value;
+    const items = loadItems(section);
+    tableBody.innerHTML = "";
+
+    if(!items.length){
+      const row = document.createElement("tr");
+      row.innerHTML = `<td colspan="4" style="text-align:center;color:#ccc;">لا توجد مقاطع مضافة لهذا القسم حتى الآن.</td>`;
+      tableBody.appendChild(row);
+
+      previewPlayer.removeAttribute("src");
+      previewTitle.textContent = "لا توجد معاينة حالية";
+      return;
+    }
+
+    items.forEach((item, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${index+1}</td>
+        <td>${escapeHtml(item.name || "")}</td>
+        <td>${escapeHtml(item.filename || "")}</td>
+        <td class="actions">
+          <button class="small-btn play" onclick="previewItem(${index})">تشغيل</button>
+          <button class="small-btn delete" onclick="deleteItem(${index})">حذف</button>
+        </td>
+      `;
+      tableBody.appendChild(row);
+    });
+  }
+
+  function addItem(){
+    const section = sectionSelect.value;
+    const name = clipNameInput.value.trim();
+    const filename = fileNameInput.value.trim();
+
+    if(!name || !filename){
+      alert("الرجاء إدخال عنوان المقطع واختيار/كتابة اسم الملف قبل الحفظ.");
+      return;
+    }
+
+    const items = loadItems(section);
+    items.push({ name, filename });
+    saveItems(section, items);
+
+    refreshTable();
+    clearForm();
+  }
+
+  function deleteItem(i){
+    const section = sectionSelect.value;
+    const items = loadItems(section);
+    if(!items[i]) return;
+
+    if(!confirm("هل أنت متأكد من حذف هذا المقطع من القائمة؟")) return;
+
+    items.splice(i,1);
+    saveItems(section, items);
+    refreshTable();
+  }
+
+  function previewItem(i){
+    const section = sectionSelect.value;
+    const items = loadItems(section);
+    if(!items[i]) return;
+
+    const folder = VIDEO_FOLDERS[section] || "";
+    const src = folder + items[i].filename;
+
+    previewPlayer.src = src;
+    previewTitle.textContent = `معاينة: ${items[i].name}`;
+    previewPlayer.play().catch(() => {
+      alert("تعذر تشغيل المعاينة. تأكد أن الملف موجود داخل المجلد الصحيح:\n" + folder);
+    });
+  }
+
+  function clearForm(){
+    clipNameInput.value = "";
+    fileNameInput.value = "";
+    filePicker.value = ""; // مسح اختيار الملف
+  }
+
+  sectionSelect.addEventListener("change", () => {
+    clearForm();
+    previewPlayer.removeAttribute("src");
+    previewTitle.textContent = "لا توجد معاينة حالية";
+    updateFolderHint();
+    refreshTable();
+  });
+
+  // حماية بسيطة من HTML داخل الجدول
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    updateFolderHint();
+    refreshTable();
+  });
+</script>
+
+</body>
+</html>

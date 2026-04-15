@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>رسائل الإدارة - ثانوية الشيخ عبدالرحمن بن سعدي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+<style>
+body{
+    margin:0;
+    padding:20px;
+    font-family:"Cairo",sans-serif;
+    background:radial-gradient(circle at top,#08224f 0%,#000814 60%);
+    color:#fff;
+    overflow:hidden;
+}
+header{text-align:center;margin-bottom:8px;}
+header h1{
+    margin:0;
+    font-size:2.2rem;
+    color:#ffd700;
+    text-shadow:0 0 18px rgba(255,215,0,0.8);
+}
+header h2{
+    margin:5px 0 0;
+    font-size:1.1rem;
+    color:#ffeb99;
+}
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    margin:8px 40px 18px;
+    font-size:0.9rem;
+    color:#d4d4ff;
+}
+.top-bar button{
+    background:#ffd700;
+    border:none;
+    padding:6px 14px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+.top-bar button:hover{
+    box-shadow:0 0 15px rgba(255,215,0,0.9);
+}
+.main{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    padding:0 25px;
+    height:calc(100vh - 170px);
+}
+.card{
+    background:rgba(255,255,255,0.03);
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,0.12);
+    padding:10px;
+    text-align:right;
+}
+.card h3{
+    margin:0 0 6px;
+    font-size:1.05rem;
+    color:#ffd700;
+    border-bottom:1px solid rgba(255,215,0,0.5);
+}
+.card .content{
+    min-height:80px;
+    max-height:100%;
+    overflow-y:auto;
+    font-size:0.9rem;
+    color:#eee;
+    padding:4px;
+}
+.card .content[contenteditable="true"]{
+    outline:none;
+    cursor:text;
+}
+footer{
+    margin-top:8px;
+    text-align:center;
+    color:#d7c78a;
+    font-size:0.85rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>رسائل الإدارة</h1>
+    <h2>ثانوية الشيخ عبدالرحمن بن سعدي</h2>
+</header>
+
+<div class="top-bar">
+    <div>رسائل قصيرة موجهة من إدارة المدرسة للطلاب والمعلمين.</div>
+    <button onclick="location.href='index.html'">🏠 العودة للصفحة الرئيسية</button>
+</div>
+
+<div class="main">
+    <div class="card">
+        <h3>📌 رسالة مدير المدرسة</h3>
+        <div id="msgPrincipal" class="content" contenteditable="true"></div>
+    </div>
+    <div class="card">
+        <h3>📌 رسائل الوكلاء</h3>
+        <div id="msgAssistants" class="content" contenteditable="true"></div>
+    </div>
+    <div class="card">
+        <h3>📌 الإرشاد الطلابي</h3>
+        <div id="msgGuidance" class="content" contenteditable="true"></div>
+    </div>
+</div>
+
+<footer>
+© إعداد الأستاذ ماجد صالح الناصر
+</footer>
+
+<script>
+function initMsg(id,key,placeholder){
+    const el=document.getElementById(id);
+    const saved=localStorage.getItem(key);
+    el.textContent = saved && saved.trim()!=="" ? saved : placeholder;
+    el.addEventListener("blur",()=>{
+        localStorage.setItem(key,el.textContent.trim());
+    });
+}
+window.addEventListener("DOMContentLoaded",()=>{
+    initMsg("msgPrincipal","msg_principal","اكتب هنا رسالة مدير المدرسة لهذا اليوم…");
+    initMsg("msgAssistants","msg_assistants","اكتب هنا رسائل الوكلاء (شؤون الطلاب، شؤون المعلمين، النشاط…) …");
+    initMsg("msgGuidance","msg_guidance","اكتب هنا رسالة الإرشاد الطلابي، توجيهات، تنبيهات، دعم نفسي أو دراسي…");
+});
+</script>
+
+</body>
+</html>

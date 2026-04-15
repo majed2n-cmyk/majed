@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>معرض الصور</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg1:#000814;
+    --bg2:#08224f;
+    --gold:#ffd700;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ width:100%; height:100%; }
+  body{
+    margin:0;
+    font-family:"Cairo",sans-serif;
+    background: radial-gradient(circle at top, var(--bg2) 0%, var(--bg1) 65%);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* المسرح في المنتصف */
+  .stage{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    perspective:1200px;
+  }
+
+  .carousel{
+    position:relative;
+    width:min(900px,92vw);
+    height:min(520px,60vh);
+    transform-style:preserve-3d;
+    transition:transform .65s ease;
+  }
+
+  .item{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:360px;
+    height:240px;
+    margin-left:-180px;
+    margin-top:-120px;
+    border-radius:18px;
+    overflow:hidden;
+    background:#000;
+    border:2px solid rgba(255,215,0,.5);
+    box-shadow:0 0 25px rgba(0,0,0,.6);
+    transition:transform .65s ease, box-shadow .45s, filter .45s, border-color .45s;
+    cursor:pointer;
+    filter:brightness(.85);
+  }
+
+  .item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  /* تكبير الصورة المختارة */
+  .item.active{
+    transform: scale(1.25) translateZ(40px);
+    border-color: rgba(255,215,0,1);
+    box-shadow:0 0 45px rgba(255,215,0,.6);
+    filter:brightness(1);
+    z-index:10;
+  }
+
+  /* أسفل الصفحة فقط */
+  .controls{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    padding:14px;
+  }
+
+  button{
+    font-family:inherit;
+    font-size:1rem;
+    padding:10px 16px;
+    border-radius:12px;
+    border:none;
+    cursor:pointer;
+  }
+
+  .btn-main{
+    background:var(--gold);
+    color:#000;
+    font-weight:700;
+  }
+
+  .btn-dark{
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.2);
+  }
+
+  .btn-dark:hover{ border-color: var(--gold); }
+
+  @media (max-width:600px){
+    .item{
+      width:300px; height:200px;
+      margin-left:-150px; margin-top:-100px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+  <div class="carousel" id="carousel">
+    <!-- ✅ مهم: المسار الصحيح images/gallery/ -->
+    <div class="item"><img src="images/gallery/1.jpg" alt=""></div>
+    <div class="item"><img src="images/gallery/2.jpg" alt=""></div>
+    <div class="item"><img src="images/gallery/3.jpg" alt=""></div>
+    <div class="item"><img src="images/gallery/4.jpg" alt=""></div>
+    <div class="item"><img src="images/gallery/5.jpg" alt=""></div>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="btn-dark" id="prev">⟵ السابق</button>
+  <button class="btn-main" onclick="location.href='index.html'">🏠 الصفحة الرئيسية</button>
+  <button class="btn-dark" id="next">التالي ⟶</button>
+</div>
+
+<script>
+  const carousel = document.getElementById("carousel");
+  const items = [...carousel.querySelectorAll(".item")];
+
+  const radius = 520;      // عمق الشريط الأسطواني
+  const AUTO_MS = 7000;    // سرعة التحريك التلقائي
+  let index = 0;
+  let timer = null;
+
+  function setup(){
+    const step = 360 / items.length;
+    items.forEach((item,i)=>{
+      const angle = step * i;
+      item.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+      item.onclick = ()=>{ index=i; update(); restartAuto(); };
+    });
+    update(true);
+    startAuto();
+  }
+
+  function update(){
+    items.forEach(x=>x.classList.remove("active"));
+    items[index].classList.add("active");
+    carousel.style.transform = `rotateY(${-index*(360/items.length)}deg)`;
+  }
+
+  function next(){
+    index = (index + 1) % items.length;
+    update();
+  }
+  function prev(){
+    index = (index - 1 + items.length) % items.length;
+    update();
+  }
+
+  document.getElementById("next").onclick = ()=>{ next(); restartAuto(); };
+  document.getElementById("prev").onclick = ()=>{ prev(); restartAuto(); };
+
+  function startAuto(){
+    stopAuto();
+    timer = setInterval(next, AUTO_MS);
+  }
+  function stopAuto(){
+    if(timer){ clearInterval(timer); timer=null; }
+  }
+  function restartAuto(){ startAuto(); }
+
+  // إيقاف مؤقت عند المرور بالماوس
+  carousel.addEventListener("mouseenter", stopAuto);
+  carousel.addEventListener("mouseleave", startAuto);
+
+  setup();
+</script>
+
+</body>
+</html>

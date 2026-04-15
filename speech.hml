@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>كلمة الصباح - ثانوية الشيخ عبدالرحمن بن سعدي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: "Cairo", sans-serif;
+      background: radial-gradient(circle at top, #08224f 0%, #000814 60%);
+      color: #fff;
+      direction: rtl;
+      overflow: hidden;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      margin: 5px 0;
+      font-size: 2.2rem;
+      color: #ffd700;
+      text-shadow: 0 0 20px rgba(255,215,0,0.8);
+    }
+    header h2 {
+      margin: 0;
+      font-size: 1.3rem;
+      color: #ffeb99;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 5px 40px 15px;
+      font-size: 0.9rem;
+      color: #d4d4ff;
+    }
+    .top-bar button {
+      border: none;
+      border-radius: 10px;
+      padding: 6px 14px;
+      background: #ffd700;
+      color: #000;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .top-bar button:hover {
+      box-shadow: 0 0 12px rgba(255,215,0,0.8);
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 2fr 1.1fr;
+      gap: 18px;
+      padding: 0 20px;
+      height: calc(100vh - 170px);
+    }
+
+    .video-panel {
+      background: rgba(255,255,255,0.04);
+      border-radius: 18px;
+      border: 2px solid rgba(255,215,0,0.4);
+      padding: 12px 12px 8px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+    .video-title {
+      font-size: 1.1rem;
+      color: #ffeb99;
+      margin-bottom: 6px;
+      text-align: right;
+    }
+    video {
+      width: 100%;
+      height: 320px;
+      border-radius: 14px;
+      background: #000;
+      outline: none;
+    }
+
+    .list-panel {
+      background: rgba(255,255,255,0.03);
+      border-radius: 18px;
+      border: 2px solid rgba(255,255,255,0.08);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 18px rgba(0,0,0,0.5);
+    }
+    .list-panel h3 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: #ffd700;
+      text-align: right;
+    }
+    .clips-list {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 260px;
+      padding-right: 4px;
+    }
+    .clip-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 8px;
+      margin-bottom: 6px;
+      background: rgba(0,0,0,0.45);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.88rem;
+    }
+    .clip-item span.title {
+      color: #ffeb99;
+    }
+    .clip-item small {
+      color: #ccc;
+      margin-right: 6px;
+    }
+    .clip-item button {
+      border: none;
+      border-radius: 8px;
+      padding: 4px 10px;
+      background: #ffd700;
+      color: #000;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .clip-item button:hover {
+      box-shadow: 0 0 10px rgba(255,215,0,0.9);
+    }
+    .no-clips {
+      font-size: 0.9rem;
+      color: #ddd;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .text-panels {
+      grid-column: 1 / span 2;
+      margin-top: 8px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .text-card {
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 8px 10px;
+      text-align: right;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    .text-card h4 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      color: #ffd700;
+      border-bottom: 1px solid rgba(255,215,0,0.4);
+      padding-bottom: 3px;
+    }
+    .text-card .content {
+      font-size: 0.87rem;
+      color: #f5f5f5;
+      line-height: 1.7;
+      min-height: 70px;
+      max-height: 100px;
+      overflow-y: auto;
+      padding: 3px;
+      border-radius: 8px;
+    }
+    .text-card .content[contenteditable="true"] {
+      outline: none;
+      cursor: text;
+    }
+    .text-hint {
+      font-size: 0.75rem;
+      color: #ccc;
+      margin-top: 2px;
+    }
+
+    footer {
+      margin-top: 4px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #d0c088;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>كلمة الصباح</h1>
+    <h2>ثانوية الشيخ عبدالرحمن بن سعدي</h2>
+  </header>
+
+  <div class="top-bar">
+    <div>هذه الصفحة مخصصة لمقاطع ومشاركات الطلاب في كلمة الصباح.</div>
+    <button onclick="location.href='index.html'">🏠 العودة للصفحة الرئيسية</button>
+  </div>
+
+  <div class="main">
+    <div class="video-panel">
+      <div class="video-title" id="currentTitle">لا يوجد مقطع محدد حاليًا</div>
+      <video id="speechPlayer" controls></video>
+    </div>
+
+    <div class="list-panel">
+      <h3>🎥 مقاطع مشاركة الطلاب في كلمة الصباح</h3>
+      <div id="clipsList" class="clips-list"></div>
+      <div style="font-size:0.8rem;color:#f5e6a7;margin-top:6px;">
+        المقاطع تُرفع من خلال لوحة التحكم في قسم
+        <b>كلمة الصباح (speech)</b> ويجب وضع الملفات داخل المجلد:
+        <code>videos/speech/</code>
+      </div>
+    </div>
+
+    <div class="text-panels">
+      <div class="text-card">
+        <h4>📜 حديث اليوم</h4>
+        <div id="hadithBlock" class="content" contenteditable="true">
+          اكتب هنا حديث اليوم النبوي الشريف مع تخريجه إن أمكن…
+        </div>
+        <div class="text-hint">يمكن تعديل النص بالحفظ التلقائي داخل المتصفح.</div>
+      </div>
+
+      <div class="text-card">
+        <h4>📝 كلمة اليوم</h4>
+        <div id="wordBlock" class="content" contenteditable="true">
+          اكتب هنا كلمة اليوم المختصرة: نصيحة، توجيه، قيمة، سلوك…
+        </div>
+        <div class="text-hint">يمكن تغيير النص يوميًا وسيتم حفظه تلقائيًا.</div>
+      </div>
+
+      <div class="text-card">
+        <h4>🤝 مشاركات نصية عامة</h4>
+        <div id="notesBlock" class="content" contenteditable="true">
+          اكتب هنا مشاركات الطلاب النصية، عبارات شكر، تقارير قصيرة، أو كلمات مميزة…
+        </div>
+        <div class="text-hint">كل ما تكتبه هنا سيبقى محفوظًا حتى تقوم بتعديله يدويًا.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © إعداد الأستاذ ماجد صالح الناصر
+  </footer>
+
+  <script>
+    function getSpeechItems() {
+      try {
+        return JSON.parse(localStorage.getItem("items_speech") || "[]");
+      } catch (e) {
+        return [];
+      }
+    }
+
+    const player = document.getElementById("speechPlayer");
+    const currentTitle = document.getElementById("currentTitle");
+    const clipsList = document.getElementById("clipsList");
+
+    function loadClips() {
+      const items = getSpeechItems();
+      clipsList.innerHTML = "";
+
+      if (!items || items.length === 0) {
+        clipsList.innerHTML = '<div class="no-clips">لا توجد مقاطع مضافة حاليًا لقسم كلمة الصباح.</div>';
+        return;
+      }
+
+      items.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "clip-item";
+        row.innerHTML = `
+          <div>
+            <span class="title">${index + 1} - ${item.name || "مقطع بدون عنوان"}</span>
+            <small>${item.filename || ""}</small>
+          </div>
+          <button onclick="playClip(${index})">تشغيل</button>
+        `;
+        clipsList.appendChild(row);
+      });
+    }
+
+    function playClip(i) {
+      const items = getSpeechItems();
+      if (!items[i]) return;
+      const item = items[i];
+      const filename = item.filename || "";
+      if (!filename) return;
+
+      const src = "videos/speech/" + filename;
+      player.src = src;
+      currentTitle.textContent = item.name || "مقطع بدون عنوان";
+      player.play().catch(() => {});
+    }
+
+    function initTextBlock(key, elementId, defaultText) {
+      const el = document.getElementById(elementId);
+      const saved = localStorage.getItem(key);
+      if (saved && saved.trim() !== "") {
+        el.textContent = saved;
+      } else {
+        el.textContent = defaultText;
+      }
+      el.addEventListener("blur", () => {
+        localStorage.setItem(key, el.textContent.trim());
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      loadClips();
+      initTextBlock("speech_hadith","hadithBlock","اكتب هنا حديث اليوم النبوي الشريف مع تخريجه إن أمكن…");
+      initTextBlock("speech_word","wordBlock","اكتب هنا كلمة اليوم المختصرة: نصيحة، توجيه، قيمة، سلوك…");
+      initTextBlock("speech_notes","notesBlock","اكتب هنا مشاركات الطلاب النصية، عبارات شكر، تقارير قصيرة، أو كلمات مميزة…");
+    });
+  </script>
+</body>
+</html>

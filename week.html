@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>برنامج الأسبوع - ثانوية الشيخ عبدالرحمن بن سعدي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+<style>
+body{
+    margin:0;
+    padding:20px;
+    font-family:"Cairo",sans-serif;
+    background:radial-gradient(circle at top,#08224f 0%,#000814 60%);
+    color:#fff;
+    overflow:hidden;
+}
+header{text-align:center;margin-bottom:8px;}
+header h1{
+    margin:0;
+    font-size:2.2rem;
+    color:#ffd700;
+    text-shadow:0 0 18px rgba(255,215,0,0.8);
+}
+header h2{
+    margin:5px 0 0;
+    font-size:1.1rem;
+    color:#ffeb99;
+}
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    margin:8px 40px 18px;
+    font-size:0.9rem;
+    color:#d4d4ff;
+}
+.top-bar button{
+    background:#ffd700;
+    border:none;
+    padding:6px 14px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+.top-bar button:hover{
+    box-shadow:0 0 15px rgba(255,215,0,0.9);
+}
+.main{
+    padding:0 40px;
+    height:calc(100vh - 170px);
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:rgba(255,255,255,0.03);
+    border-radius:16px;
+    overflow:hidden;
+}
+th,td{
+    border:1px solid rgba(255,255,255,0.15);
+    padding:10px;
+    font-size:0.9rem;
+}
+th{
+    background:rgba(255,215,0,0.15);
+    color:#ffd700;
+}
+td div[contenteditable="true"]{
+    min-height:40px;
+    outline:none;
+    cursor:text;
+}
+footer{
+    margin-top:8px;
+    text-align:center;
+    color:#d7c78a;
+    font-size:0.85rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>برنامج الأسبوع</h1>
+    <h2>ثانوية الشيخ عبدالرحمن بن سعدي</h2>
+</header>
+
+<div class="top-bar">
+    <div>جدول البرامج اليومية (هل تعلم – شخصية الأسبوع – قصة وعبرة – مسابقة…).</div>
+    <button onclick="location.href='index.html'">🏠 العودة للصفحة الرئيسية</button>
+</div>
+
+<div class="main">
+    <table>
+        <tr>
+            <th>اليوم</th>
+            <th>البرنامج</th>
+        </tr>
+        <tr>
+            <td>الإثنين</td>
+            <td><div id="progMon" contenteditable="true"></div></td>
+        </tr>
+        <tr>
+            <td>الثلاثاء</td>
+            <td><div id="progTue" contenteditable="true"></div></td>
+        </tr>
+        <tr>
+            <td>الأربعاء</td>
+            <td><div id="progWed" contenteditable="true"></div></td>
+        </tr>
+        <tr>
+            <td>الخميس</td>
+            <td><div id="progThu" contenteditable="true"></div></td>
+        </tr>
+    </table>
+</div>
+
+<footer>
+© إعداد الأستاذ ماجد صالح الناصر
+</footer>
+
+<script>
+function initCell(id,key,placeholder){
+    const el=document.getElementById(id);
+    const saved=localStorage.getItem(key);
+    el.textContent = saved && saved.trim()!=="" ? saved : placeholder;
+    el.addEventListener("blur",()=>{
+        localStorage.setItem(key,el.textContent.trim());
+    });
+}
+window.addEventListener("DOMContentLoaded",()=>{
+    initCell("progMon","week_mon","مثلاً: فقرة (هل تعلم؟) + آيات مختارة");
+    initCell("progTue","week_tue","مثلاً: شخصية الأسبوع + لقاء قصير");
+    initCell("progWed","week_wed","مثلاً: قصة وعبرة + حكمة اليوم");
+    initCell("progThu","week_thu","مثلاً: مسابقة ثقافية + إعلان التميّز");
+});
+</script>
+
+</body>
+</html>

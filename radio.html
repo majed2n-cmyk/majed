@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>الإذاعة المدرسية</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#000814;
+      --bg2:#08224f;
+      --gold:#ffd700;
+      --card: rgba(255,255,255,0.06);
+      --border: rgba(255,215,0,0.35);
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; margin:0; overflow:hidden; }
+
+    body{
+      font-family:"Cairo",system-ui,sans-serif;
+      background: radial-gradient(circle at top, var(--bg2) 0%, var(--bg1) 65%);
+      color:#fff;
+    }
+
+    .center-wrap{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+
+    .panel{
+      width:min(980px, 95vw);
+      height:min(600px, 86vh);
+      border-radius:22px;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 0 28px rgba(0,0,0,0.45);
+      backdrop-filter: blur(6px);
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      padding:16px;
+      gap:12px;
+    }
+
+    /* أيقونات فقط */
+    .icon-bar{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      align-items:center;
+      padding:6px 0 2px;
+      flex:0 0 auto;
+    }
+
+    .i-btn{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      border: 1px solid rgba(255,215,0,0.35);
+      background: rgba(0,0,0,0.22);
+      color: var(--gold);
+      font-size:20px;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      box-shadow: 0 0 18px rgba(0,0,0,0.35);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      position:relative;
+    }
+    .i-btn:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,215,0,0.85);
+      box-shadow: 0 0 24px rgba(255,215,0,0.18);
+    }
+
+    .i-btn[data-tip]::after{
+      content: attr(data-tip);
+      position:absolute;
+      bottom: -44px;
+      left:50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.78);
+      border: 1px solid rgba(255,215,0,0.35);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease;
+    }
+    .i-btn:hover::after{ opacity: 1; }
+
+    .cards{
+      flex:1 1 auto;
+      min-height:0;
+      overflow:auto;
+      padding: 6px 4px;
+    }
+
+    .cards::-webkit-scrollbar{ width:10px; }
+    .cards::-webkit-scrollbar-thumb{ background: rgba(255,215,0,0.30); border-radius: 10px; }
+    .cards::-webkit-scrollbar-track{ background: rgba(255,255,255,0.06); border-radius: 10px; }
+
+    .card{
+      border-radius:20px;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,215,0,0.18);
+      box-shadow: 0 0 18px rgba(0,0,0,0.35);
+      padding:14px;
+      margin: 10px 0;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      position:relative;
+    }
+    .card.primary{
+      border-color: rgba(255,215,0,0.55);
+      box-shadow: 0 0 30px rgba(255,215,0,0.15);
+    }
+
+    .card input,
+    .card textarea{
+      width:100%;
+      border-radius:14px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.35);
+      color:#fff;
+      font-family:inherit;
+      padding:12px;
+      outline:none;
+    }
+    .card input{ font-weight:900; font-size:1.05rem; }
+    .card textarea{ min-height:140px; resize:vertical; line-height:1.7; font-size:1rem; }
+
+    /* حذف مربع */
+    .del{
+      position:absolute;
+      top:10px;
+      left:10px;
+      width:40px;
+      height:40px;
+      border-radius:14px;
+      border: 1px solid rgba(255,80,80,0.35);
+      background: rgba(255,80,80,0.14);
+      color:#fff;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      font-size:18px;
+    }
+
+    /* توثيق */
+    .verify-btn{
+      position:absolute;
+      top:10px;
+      right:10px;
+      width:40px;
+      height:40px;
+      border-radius:14px;
+      border: 1px solid rgba(255,215,0,0.35);
+      background: rgba(0,0,0,0.22);
+      color: var(--gold);
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      font-size:18px;
+    }
+    .badge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 10px;
+      border-radius:14px;
+      background: rgba(255,215,0,0.10);
+      border: 1px solid rgba(255,215,0,0.25);
+      font-size:0.92rem;
+    }
+    .badge b{ color: var(--gold); }
+
+    .verify-panel{
+      border-radius:18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px dashed rgba(255,215,0,0.35);
+      padding:10px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .verify-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .mini{
+      flex:1 1 220px;
+      min-width: 220px;
+      padding:10px;
+      border-radius:12px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.35);
+      color:#fff;
+      font-family:inherit;
+      outline:none;
+    }
+    .vbtn{
+      border:none;
+      cursor:pointer;
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:900;
+      font-family:inherit;
+      background: var(--gold);
+      color:#000;
+      white-space:nowrap;
+    }
+    .vbtn2{
+      border:1px solid rgba(255,255,255,0.18);
+      cursor:pointer;
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:900;
+      font-family:inherit;
+      background: rgba(255,255,255,0.06);
+      color:#fff;
+      white-space:nowrap;
+    }
+
+    .home{
+      position:absolute;
+      bottom:12px;
+      right:12px;
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      border: 1px solid rgba(255,215,0,0.35);
+      background: rgba(0,0,0,0.22);
+      color: var(--gold);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="center-wrap">
+    <div class="panel">
+
+      <div class="icon-bar">
+        <button class="i-btn" id="add" data-tip="إضافة مربع جديد">➕</button>
+        <button class="i-btn" id="export" data-tip="تصدير النصوص (نسخ + TXT)">💾</button>
+        <button class="i-btn" id="clearAll" data-tip="مسح الكل">🗑</button>
+      </div>
+
+      <div class="cards" id="cards"></div>
+
+      <button class="home" onclick="location.href='index.html'" aria-label="الصفحة الرئيسية" title="الصفحة الرئيسية">🏠</button>
+    </div>
+  </div>
+
+<script>
+  // =========================
+  // Cards storage
+  // =========================
+  const CARDS_KEY = "radio_center_cards_v2"; // (مختلف عن القديم حتى لا يتعارض)
+  const REG_KEY   = "radio_student_registry_v1"; // سجل الطلاب: id -> name
+  const DAY_KEY_PREFIX = "radio_daily_used_";     // مثال: radio_daily_used_2025-12-21
+
+  function todayKey(){
+    const d = new Date();
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const dd = String(d.getDate()).padStart(2,"0");
+    return `${DAY_KEY_PREFIX}${yyyy}-${mm}-${dd}`;
+  }
+
+  function loadJSON(key, fallback){
+    try{
+      const v = JSON.parse(localStorage.getItem(key) || "");
+      return (v === null || v === undefined) ? fallback : v;
+    }catch(e){
+      return fallback;
+    }
+  }
+  function saveJSON(key, value){
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  function ensureOne(cards){
+    if(cards.length === 0) cards.push({ title:"", text:"", studentId:"" });
+    return cards;
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  // =========================
+  // Student registry + rules
+  // =========================
+  function loadRegistry(){
+    return loadJSON(REG_KEY, {}); // { "S12345": {name:"فلان فلان فلان"} }
+  }
+  function saveRegistry(reg){
+    saveJSON(REG_KEY, reg);
+  }
+
+  function loadUsedToday(){
+    return loadJSON(todayKey(), []); // ["S12345", ...]
+  }
+  function saveUsedToday(list){
+    saveJSON(todayKey(), list);
+  }
+
+  function generateStudentId(name){
+    // ID بسيط وقوي للاستخدام: S + تاريخ + 4 أرقام عشوائية
+    const d = new Date();
+    const stamp = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+    const rnd = String(Math.floor(Math.random()*9000)+1000);
+    return `S${stamp}${rnd}`;
+  }
+
+  function validateTripleName(name){
+    // ثلاثي: 3 كلمات على الأقل
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    return parts.length >= 3;
+  }
+
+  function markUsedToday(studentId){
+    const used = loadUsedToday();
+    if(used.includes(studentId)) return false;
+    used.push(studentId);
+    saveUsedToday(used);
+    return true;
+  }
+
+  // =========================
+  // Render
+  // =========================
+  function render(){
+    const wrap = document.getElementById("cards");
+    let cards = ensureOne(loadJSON(CARDS_KEY, []));
+    saveJSON(CARDS_KEY, cards);
+
+    const reg = loadRegistry();
+
+    wrap.innerHTML = "";
+    cards.forEach((c, idx) => {
+      const studentName = c.studentId && reg[c.studentId] ? reg[c.studentId].name : "";
+      const card = document.createElement("div");
+      card.className = "card" + (idx === 0 ? " primary" : "");
+
+      card.innerHTML = `
+        ${cards.length > 1 ? `<button class="del" data-del="${idx}" title="حذف هذا المربع">🗑</button>` : ``}
+        <button class="verify-btn" data-verify="${idx}" title="توثيق المشاركة">🪪</button>
+
+        ${c.studentId && studentName ? `
+          <div class="badge">
+            <span>موثّق:</span>
+            <b>${escapeHtml(studentName)}</b>
+            <span>•</span>
+            <span>${escapeHtml(c.studentId)}</span>
+          </div>
+        ` : ""}
+
+        <input type="text" placeholder="عنوان فارغ..." value="${escapeHtml(c.title || "")}" data-i="${idx}" data-f="title">
+        <textarea placeholder="نص المشاركة فارغ..." data-i="${idx}" data-f="text">${escapeHtml(c.text || "")}</textarea>
+
+        <div class="verify-panel" id="vp_${idx}" style="display:none;">
+          <div class="verify-row">
+            <input class="mini" type="text" id="name_${idx}" placeholder="اسم الطالب ثلاثي (تسجيل لأول مرة)">
+            <button class="vbtn" data-save-name="${idx}">تسجيل الاسم + توليد رقم</button>
+          </div>
+          <div class="verify-row">
+            <input class="mini" type="text" id="id_${idx}" placeholder="أو أدخل رقم الطالب (ID) لإظهار الاسم">
+            <button class="vbtn2" data-use-id="${idx}">اعتماد الرقم</button>
+          </div>
+          <div class="verify-row">
+            <button class="vbtn2" data-clear-stu="${idx}">إلغاء توثيق هذا المربع</button>
+          </div>
+        </div>
+      `;
+      wrap.appendChild(card);
+    });
+
+    // حفظ أثناء الكتابة
+    wrap.querySelectorAll("input[data-i], textarea[data-i]").forEach(el => {
+      el.addEventListener("input", (e) => {
+        const i = Number(e.target.dataset.i);
+        const f = e.target.dataset.f;
+        const now = loadJSON(CARDS_KEY, []);
+        if(now[i]){
+          now[i][f] = e.target.value;
+          saveJSON(CARDS_KEY, now);
+        }
+      });
+    });
+
+    // حذف مربع
+    wrap.querySelectorAll("[data-del]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = Number(btn.dataset.del);
+        const now = loadJSON(CARDS_KEY, []);
+        now.splice(i, 1);
+        saveJSON(CARDS_KEY, ensureOne(now));
+        render();
+      });
+    });
+
+    // فتح/إغلاق لوحة التوثيق
+    wrap.querySelectorAll("[data-verify]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = Number(btn.dataset.verify);
+        const panel = document.getElementById(`vp_${i}`);
+        panel.style.display = (panel.style.display === "none") ? "block" : "none";
+      });
+    });
+
+    // تسجيل اسم لأول مرة + توليد رقم
+    wrap.querySelectorAll("[data-save-name]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = Number(btn.dataset.saveName);
+        const nameInput = document.getElementById(`name_${i}`);
+        const name = (nameInput.value || "").trim();
+
+        if(!validateTripleName(name)){
+          alert("الرجاء إدخال اسم الطالب ثلاثي (3 كلمات على الأقل).");
+          return;
+        }
+
+        // توليد ID + حفظه في السجل
+        const id = generateStudentId(name);
+        const reg = loadRegistry();
+        reg[id] = { name };
+        saveRegistry(reg);
+
+        // منع التكرار في نفس اليوم
+        if(!markUsedToday(id)){
+          alert("هذا الطالب مسجل اليوم مسبقًا، لا يمكن تكراره في نفس اليوم.");
+          return;
+        }
+
+        // ربطه بالمربع
+        const cards = loadJSON(CARDS_KEY, []);
+        cards[i].studentId = id;
+        saveJSON(CARDS_KEY, cards);
+
+        alert(`تم التوثيق ✅\nاسم الطالب: ${name}\nرقم الطالب: ${id}`);
+        render();
+      });
+    });
+
+    // اعتماد رقم طالب موجود
+    wrap.querySelectorAll("[data-use-id]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = Number(btn.dataset.useId);
+        const idInput = document.getElementById(`id_${i}`);
+        const id = (idInput.value || "").trim();
+
+        if(!id){
+          alert("أدخل رقم الطالب (ID).");
+          return;
+        }
+
+        const reg = loadRegistry();
+        if(!reg[id]){
+          alert("هذا الرقم غير مسجل. في المرة الأولى يجب تسجيل اسم الطالب.");
+          return;
+        }
+
+        // منع التكرار في نفس اليوم
+        const used = loadUsedToday();
+        if(used.includes(id)){
+          alert("هذا الطالب تم توثيقه اليوم مسبقًا، لا يمكن إدخاله أكثر من مرة في نفس اليوم.");
+          return;
+        }
+        used.push(id);
+        saveUsedToday(used);
+
+        // ربطه بالمربع
+        const cards = loadJSON(CARDS_KEY, []);
+        cards[i].studentId = id;
+        saveJSON(CARDS_KEY, cards);
+
+        alert(`تم التوثيق ✅\n${reg[id].name}\nرقم الطالب: ${id}`);
+        render();
+      });
+    });
+
+    // إلغاء توثيق هذا المربع (لا يلغي سجل الطالب ولا سجل اليوم)
+    wrap.querySelectorAll("[data-clear-stu]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = Number(btn.dataset.clearStu);
+        const cards = loadJSON(CARDS_KEY, []);
+        cards[i].studentId = "";
+        saveJSON(CARDS_KEY, cards);
+        render();
+      });
+    });
+  }
+
+  // =========================
+  // Top actions
+  // =========================
+  function addCard(){
+    const cards = loadJSON(CARDS_KEY, []);
+    cards.push({ title:"", text:"", studentId:"" });
+    saveJSON(CARDS_KEY, cards);
+    render();
+    const wrap = document.getElementById("cards");
+    wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  function clearAll(){
+    const ok = confirm("هل تريد مسح كل المربعات؟");
+    if(!ok) return;
+    saveJSON(CARDS_KEY, [{ title:"", text:"", studentId:"" }]);
+    render();
+  }
+
+  async function exportTexts(){
+    const cards = loadJSON(CARDS_KEY, []);
+    const reg = loadRegistry();
+
+    const cleaned = cards.map((c, idx) => {
+      const t = (c.title || "").trim();
+      const x = (c.text || "").trim();
+      const stu = c.studentId && reg[c.studentId] ? `${reg[c.studentId].name} (${c.studentId})` : "";
+      if(!t && !x) return "";
+      const head = `(${idx+1}) ${t || "بدون عنوان"}${stu ? " — " + stu : ""}`;
+      return `${head}\n${x || "بدون نص"}\n`;
+    }).filter(Boolean);
+
+    const output = cleaned.length
+      ? `الإذاعة المدرسية – ثانوية الشيخ عبدالرحمن بن سعدي\n\n${cleaned.join("\n")}`
+      : `الإذاعة المدرسية – لا توجد مشاركات مكتوبة بعد.`;
+
+    try{
+      await navigator.clipboard.writeText(output);
+    }catch(e){
+      const ta = document.createElement("textarea");
+      ta.value = output;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+
+    const blob = new Blob([output], {type:"text/plain;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "الإذاعة-المدرسية.txt";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+
+    alert("تم تصدير النصوص ✅ (تم النسخ + تنزيل TXT)");
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("add").addEventListener("click", addCard);
+    document.getElementById("clearAll").addEventListener("click", clearAll);
+    document.getElementById("export").addEventListener("click", exportTexts);
+    render();
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ثانوية الشيخ عبدالرحمن بن سعدي</title>
+
+<link href="fonts.googleapis.com" rel="stylesheet">
+<link rel="stylesheet" href="cdnjs.cloudflare.com"
+integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+body{
+    margin:0;
+    padding:0;
+    background:#001634;
+    font-family:"Cairo",sans-serif;
+    color:white;
+    overflow:hidden;
+    text-align:center;
+}
+
+h1{
+    margin-top:25px;
+    font-size:3.5rem;
+    color:#ffd700;
+    text-shadow:0 0 18px rgba(255,215,0,0.7);
+    letter-spacing:1px;
+}
+
+.icons{
+    margin-top:45px;
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    flex-wrap:wrap;
+}
+
+.icon-box{
+    width:200px;
+    height:200px;
+    border-radius:22px;
+    background:rgba(255,255,255,0.06);
+    border:2px solid rgba(255,215,0,0.55);
+    box-shadow:0 0 18px rgba(255,215,0,0.35);
+    backdrop-filter:blur(4px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:#ffd700;
+    transition:0.25s;
+    cursor:pointer;
+}
+
+.icon-box:hover{
+    transform:translateY(-8px) scale(1.05);
+    box-shadow:0 0 28px rgba(255,215,0,0.7);
+}
+
+.icon-box span{
+    margin-top:10px;
+    font-size:1.3rem;
+    font-weight:700;
+}
+
+footer{
+    position:absolute;
+    bottom:20px;
+    width:100%;
+    font-size:0.9rem;
+    color:#ffd700;
+    opacity:0.75;
+}
+</style>
+</head>
+
+<body>
+
+<h1>ثانوية الشيخ عبدالرحمن بن سعدي</h1>
+
+<div class="icons">
+
+    <div class="icon-box" onclick="location.href='quran.html'">
+        <i class="fas fa-book-open" style="font-size:4rem;"></i>
+        <span>القرآن الكريم</span>
+    </div>
+
+    <div class="icon-box" onclick="location.href='anthem.html'">
+        <i class="fas fa-music" style="font-size:4rem;"></i>
+        <span>النشيد الوطني</span>
+    </div>
+
+    <div class="icon-box" onclick="location.href='gallery.html'">
+        <i class="fas fa-images" style="font-size:4rem;"></i>
+        <span>معرض الصور</span>
+    </div>
+
+    <!-- ✅ التعديل هنا فقط -->
+    <div class="icon-box" onclick="location.href='radio.html'">
+        <i class="fas fa-broadcast-tower" style="font-size:4rem;"></i>
+        <span>الإذاعة المدرسية</span>
+    </div>
+
+</div>
+
+<footer>
+© إعداد الأستاذ ماجد صالح الناصر
+</footer>
+
+</body>
+</html>

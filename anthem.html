@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>النشيد الوطني - ثانوية الشيخ عبدالرحمن بن سعدي</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    font-family: "Cairo", sans-serif;
+    overflow: hidden;
+}
+
+/* الفيديو */
+video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    background: black;
+    display: none; /* مخفي حتى الضغط */
+}
+
+/* شاشة البداية */
+.start-screen {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top, #08224f 0%, #000814 65%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    color: #ffd700;
+    text-align: center;
+}
+
+.start-screen h1 {
+    margin: 0 0 20px;
+    font-size: 2.8rem;
+    text-shadow: 0 0 25px rgba(255,215,0,0.9);
+}
+
+/* زر التشغيل الكبير */
+.start-btn {
+    background: #ffd700;
+    color: #000;
+    border: none;
+    padding: 20px 50px;
+    border-radius: 22px;
+    font-size: 2rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(255,215,0,0.9);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.start-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(255,215,0,1);
+}
+
+/* زر الرجوع */
+.home {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 20;
+    background: rgba(0,0,0,0.55);
+    color: #ffd700;
+    border: 1px solid rgba(255,215,0,0.4);
+    padding: 8px 14px;
+    border-radius: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: none; /* يظهر أثناء التشغيل */
+}
+
+/* حقوق */
+.credit {
+    position: absolute;
+    bottom: 14px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #ffd700;
+    opacity: 0.7;
+}
+</style>
+</head>
+
+<body>
+
+<!-- شاشة البداية -->
+<div class="start-screen" id="startScreen">
+    <h1>🎵 النشيد الوطني</h1>
+    <button class="start-btn" onclick="startAnthem()">▶ تشغيل النشيد</button>
+    <div class="credit">© إعداد الأستاذ ماجد صالح الناصر</div>
+</div>
+
+<!-- زر الرجوع -->
+<div class="home" id="homeBtn" onclick="location.href='index.html'">🏠 الرئيسية</div>
+
+<!-- الفيديو -->
+<video id="anthemVideo" controls>
+    <source src="videos/anthem/anthem.mp4" type="video/mp4">
+    متصفحك لا يدعم تشغيل الفيديو
+</video>
+
+<script>
+const video = document.getElementById("anthemVideo");
+const startScreen = document.getElementById("startScreen");
+const homeBtn = document.getElementById("homeBtn");
+
+function startAnthem() {
+    startScreen.style.display = "none";
+    video.style.display = "block";
+    homeBtn.style.display = "block";
+
+    video.muted = false;   // تشغيل بالصوت
+    video.play().catch(() => {
+        alert("تعذر تشغيل الفيديو، تأكد من الملف.");
+    });
+}
+
+// الرجوع تلقائيًا بعد انتهاء النشيد
+video.addEventListener("ended", () => {
+    window.location.href = "index.html";
+});
+</script>
+
+</body>
+</html>
